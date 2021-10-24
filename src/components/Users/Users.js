@@ -11,9 +11,7 @@ const Users = () => {
         <div>
             <h1>Users Available : {users.length}</h1>
             {
-                users.map(user=><li>{user.name} :: {user.email} :: {user.phone}
-                 
-                </li>)
+                users.map(user=><li>{user.name} :: {user.email} :: {user.phone}</li>)
             }
         </div>
     );

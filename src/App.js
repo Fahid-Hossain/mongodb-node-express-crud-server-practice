@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter,Switch,Route } from 'react-router-dom';
 import Headers from './components/Headers/Headers';
 import Home from './components/Home/Home';
 import Users from './components/Users/Users';
-import AddUser from './components/Adduser/Adduser';
+import AddUser from './components/AddUser/AddUser';
 
 function App() {
   return (
