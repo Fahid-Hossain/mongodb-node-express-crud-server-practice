@@ -4,6 +4,7 @@ import Headers from './components/Headers/Headers';
 import Home from './components/Home/Home';
 import Users from './components/Users/Users';
 import AddUser from './components/AddUser/AddUser';
+import Updateuser from './components/Updateuser/Updateuser';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
             </Route>
             <Route path="/user/add">
                 <AddUser></AddUser>
+            </Route>
+            <Route path="/user/update/:id">
+                <Updateuser></Updateuser>
             </Route>
           </Switch>
         </BrowserRouter>
