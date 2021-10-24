@@ -2,6 +2,7 @@ const express = require("express");
 //add middleware cors policy
 const cors = require('cors')
 var bodyParser = require('body-parser')
+const ObjectId = require("mongodb").ObjectId;
 const app = express();
 const port = 5000;
 
@@ -53,13 +54,58 @@ async function run() {
     //   const result = await userCollection.insertOne(user);
     //   console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
-    //insert users from ui
-    //post on server
+    //------------insert users from ui ----------------------
+    //-------post on server-----------------
     app.post("/users",async(req,res)=>{
         const newUser = req.body;
         const result = await userCollection.insertOne(newUser);
         console.log(`A document was inserted with the _id: ${result.insertedId}`);
         console.log(result);
+        res.json(result);
+    })
+
+    //Load data from database and show in website
+    app.get("/users",async(req,res)=>{
+        console.log("load data from server");
+        const cursor = userCollection.find({});
+        const users =  await cursor.toArray();
+        res.send(users);
+    })
+
+    //Delete specific user from ui and server 
+    app.delete("/users/:id",async(req,res)=>{
+        const id = req.params.id;
+        console.log("deleting user",id);
+        const query = {_id:ObjectId(id)}
+        const result = await userCollection.deleteOne(query);
+        res.json(result)
+    })
+
+    // Load single item by id and display the user info
+    app.get("/users/:id",async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id:ObjectId(id)};
+        const user = await userCollection.findOne(query);
+        console.log("load user with id",id);
+        res.send(user)
+
+    })
+
+    //Update an user and store in database server
+    app.put("/users/:id",async(req,res)=>{
+        const id = req.params.id;
+        const updatedUser = req.body;
+        const filter = {_id:ObjectId(id)};
+        const options = {upsert:true};
+        const updateDoc = {
+            $set:{
+                name:updatedUser.name,
+                email:updatedUser.email,
+                phone:updatedUser.phone,
+            },
+        }
+        const result = await userCollection.updateOne(filter,updateDoc,options)
+        console.log("updating user id",id);
         res.json(result);
     })
 
